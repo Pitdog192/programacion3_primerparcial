@@ -12,3 +12,7 @@ export interface IProduct {
     disponible: boolean;
     categorias: ICategory[];
 }
+
+export interface ICartItem extends IProduct {
+    cantidad: number;
+}

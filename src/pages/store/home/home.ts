@@ -1,40 +1,40 @@
 import { PRODUCTS, getCategories } from "../../../data/data";
-import type { IProduct } from "../../../types/IProduct";
+import type { IProduct, ICartItem } from "../../../types/IProduct";
 
 const gridProductos = document.getElementById("gridProductos") as HTMLElement;
 const busquedaProducto = document.getElementById("busquedaProducto") as HTMLInputElement;
 const categoriasContainer = document.getElementById("categorias") as HTMLElement;
 
 const mostrarProductos = (listaARenderizar: IProduct[]) => {
-    // Se vacia el contenedor para evitar duplicados
     gridProductos.innerHTML = "";
 
-    // Informar al usuario en caso de no encontrar nada
     if (listaARenderizar.length === 0) {
-        gridProductos.innerHTML = `
-            <div class="sin-resultados">
-                <p>No se encontraron productos que coincidan con tu búsqueda.</p>
-            </div>
-        `;
+        gridProductos.innerHTML = `<p>No se encontraron productos.</p>`;
         return;
     }
 
-    // Se crea la card por cada producto
     listaARenderizar.forEach((producto) => {
         const article = document.createElement("article");
-        article.classList.add("producto-card"); // Estilos para las card de productos
+        article.classList.add("producto-card");
         
         article.innerHTML = `
             <img src="/assets/${producto.imagen}" alt="${producto.nombre}" width="150">
             <h3>${producto.nombre}</h3>
             <p>${producto.descripcion}</p>
             <p><strong>$${producto.precio}</strong></p>
-            <button ${!producto.disponible ? 'disabled' : ''}>
+            <button id="btn-add-${producto.id}" ${!producto.disponible ? 'disabled' : ''}>
                 ${producto.disponible ? 'Agregar al carrito' : 'Sin stock'}
             </button>
         `;
         
         gridProductos.appendChild(article);
+
+        const boton = article.querySelector(`#btn-add-${producto.id}`);
+        if (boton && producto.disponible) {
+            boton.addEventListener("click", () => {
+                agregarAlCarrito(producto);
+            });
+        }
     });
 };
 
@@ -82,7 +82,6 @@ const mostrarCategorias = () => {
 };
 
 const agregarAlCarrito = (producto: IProduct) => {
-    // Intentamos obtener el carrito previo
     const carritoStorage = localStorage.getItem("carrito_compras");
     let carrito: ICartItem[] = carritoStorage ? JSON.parse(carritoStorage) : [];
 
@@ -90,17 +89,13 @@ const agregarAlCarrito = (producto: IProduct) => {
     const indice = carrito.findIndex(item => item.id === producto.id);
 
     if (indice !== -1) {
-        // Criterio: Si ya existe, actualizamos cantidad
         carrito[indice].cantidad += 1;
     } else {
-        // Criterio: Si es nuevo, lo agregamos con cantidad 1
         carrito.push({ ...producto, cantidad: 1 });
     }
 
-    // Guardamos el array actualizado
     localStorage.setItem("carrito_compras", JSON.stringify(carrito));
 
-    // Indicador visual simple (puedes mejorar esto con un modal luego)
     alert(`Se agregó "${producto.nombre}" al carrito`);
 };
 

@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Cart</title>
+    <title>Mi Carrito - Food Store</title>
 </head>
 <body>
-    <h1>Store Cart Page</h1>
-    <script src="./cart.ts"></script>
+    <header>
+        <h1>Tu Carrito</h1>
+        <nav>
+            <a href="../home/home.html">← Volver al Catálogo</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="contenedorCarrito">
+            </section>
+
+        <section id="seccionTotal" style="display: none; margin-top: 20px;">
+            <hr>
+            <h3>Total: $<span id="precioTotal">0</span></h3>
+            <button id="btnVaciar">Vaciar Carrito</button>
+        </section>
+    </main>
+
+    <script type="module" src="./cart.ts"></script>
 </body>
 </html>
