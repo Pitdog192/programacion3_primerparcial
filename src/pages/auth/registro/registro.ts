@@ -22,7 +22,7 @@ form?.addEventListener('submit', (e: Event) => {
         email: email,
         password: password,
         loggedIn: false, // Por defecto en false hasta que inicie sesion
-        rol: 'client' // aca se cambia el rol por defecto
+        rol: 'admin' // aca se cambia el rol por defecto
     };
 
     const storageUsers = localStorage.getItem('users'); // Obtengo lo que existe en localStorage

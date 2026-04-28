@@ -8,9 +8,9 @@ form.addEventListener("submit", (e: SubmitEvent) => {
   e.preventDefault();
 
   const emailValue = inputEmail.value;
-  const passwordValue = inputPassword.value; 
+  const passwordValue = inputPassword.value;
   const storageUsers = localStorage.getItem("users"); // Obtengo la lista de usuarios registrados desde localStorage
-  
+
   if (!storageUsers) {
     alert("No hay usuarios registrados en el sistema.");
     return;
@@ -29,11 +29,17 @@ form.addEventListener("submit", (e: SubmitEvent) => {
       loggedIn: true
     };
 
-    localStorage.setItem("userData", JSON.stringify(userData)); // Se guarda el objeto de sesión en localStorage
-    alert("Bienvenido " + userFound.email + "!"); // Se da la bienvenida al usuario
-    
-    // window.location.href = "../../../index.html"; // Redirigir al home
+    localStorage.setItem("userData", JSON.stringify(userData));
+    alert("Bienvenido " + userFound.email + "!");
+
+    // REDIRECCIÓN DINÁMICA SEGÚN ROL
+    if (userData.rol === "admin") {
+      window.location.href = "/src/pages/admin/home/home.html";
+    } else {
+      window.location.href = "/src/pages/client/home/home.html";
+    }
+
   } else {
-    alert("Email o contraseña incorrectos."); // En caso contrario se da aviso de error
+    alert("Email o contraseña incorrectos.");
   }
 });
